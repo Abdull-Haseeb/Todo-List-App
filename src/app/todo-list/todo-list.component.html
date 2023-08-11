@@ -1,0 +1,48 @@
+<div class="todo-app">
+  <h2>My Todo List</h2>
+  <div class="add-todo">
+    <input #newTodo type="text" placeholder="Add a new todo" />
+    <button
+      (click)="addTodo(newTodo.value); newTodo.value = ''"
+      id="add-button"
+    >
+      Add
+    </button>
+  </div>
+  <ul class="todo-list">
+    <li *ngFor="let todo of todos; let i = index" class="todo-item">
+      <div class="todo-content">
+        <input type="checkbox" [(ngModel)]="todo.done" class="todo-checkbox" />
+        <ng-container *ngIf="!todo.editing; else editMode">
+          <span [class.completed]="todo.done" class="todo-text">{{
+            todo.text
+          }}</span>
+        </ng-container>
+        <ng-template #editMode>
+          <input
+            [(ngModel)]="editedTodo.text"
+            (keyup.enter)="updateTodo(i, editedTodo)"
+            class="edit-input"
+          />
+        </ng-template>
+      </div>
+      <div class="todo-actions">
+        <button
+          *ngIf="!todo.editing"
+          (click)="startEditing(i)"
+          class="edit-button"
+        >
+          Edit
+        </button>
+        <button
+          *ngIf="todo.editing"
+          (click)="updateTodo(i, editedTodo)"
+          class="update-button"
+        >
+          Save
+        </button>
+        <button (click)="deleteTodo(i)" class="delete-button">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>
